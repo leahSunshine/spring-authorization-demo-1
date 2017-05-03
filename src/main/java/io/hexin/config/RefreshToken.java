@@ -34,24 +34,24 @@ public class RefreshToken extends HttpServlet{
     }
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-        	response.setContentType( "text/event-stream;charset=UTF-8" );
-            response.setHeader( "Cache-Control", "no-cache" );
-            response.setHeader( "Connection", "keep-alive" );
-            PrintWriter out = response.getWriter();
-        	String token = request.getParameter("token");
-        	Claims claims = jwt.parseJWT(token);
-     		String json = claims.getSubject();
-     		User user = JSONObject.parseObject(json, User.class);
-     		String subject = JwtUtil.generalSubject(user);
-     		//延期
-     		String refreshToken = jwt.createJWT(Constant.JWT_ID, subject, Constant.JWT_TTL);
-            out.print("retry: "+Constant.JWT_REFRESH_INTERVAL+ "\n" );
-     		out.print("data: "+refreshToken+"\n\n" );
-            out.flush();
-          } catch (Exception e) { //包含超时，签名错误等异常
-        	  logger.error(e);
-          }
-     }
+		try {
+			response.setContentType("text/event-stream;charset=UTF-8");
+			response.setHeader("Cache-Control", "no-cache");
+			response.setHeader("Connection", "keep-alive");
+			PrintWriter out = response.getWriter();
+			String token = request.getParameter("token");
+			Claims claims = jwt.parseJWT(token);
+			String json = claims.getSubject();
+			User user = JSONObject.parseObject(json, User.class);
+			String subject = JwtUtil.generalSubject(user);
+			//延期
+			String refreshedToken = jwt.createJWT(Constant.JWT_ID, subject, Constant.JWT_TTL);
+			out.print("retry: " + Constant.JWT_REFRESH_INTERVAL + "\n");
+			out.print("data: " + refreshedToken + "\n\n");
+			out.flush();
+		} catch (Exception e) { //包含超时，签名错误等异常
+			logger.error(e);
+		}
+	}
 
 }

@@ -20,16 +20,13 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 @Component
 public class JwtUtil {
-	
-	@Value("${spring.profiles.active}")
-    private String profiles;
-	
+
 	/**
 	 * 由字符串生成加密key
 	 * @return
 	 */
 	public SecretKey generalKey(){
-		String stringKey = profiles+Constant.JWT_SECRET;
+		String stringKey = Constant.JWT_SECRET;
 		byte[] encodedKey = Base64.decodeBase64(stringKey);
 	    SecretKey key = new SecretKeySpec(encodedKey, 0, encodedKey.length, "AES");
 	    return key;

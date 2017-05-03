@@ -1,4 +1,4 @@
-package io.hexin.servlet;
+package io.hexin.controller;
 
 import io.hexin.bean.User;
 import io.hexin.service.UserService;
