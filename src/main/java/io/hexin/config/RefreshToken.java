@@ -49,7 +49,7 @@ public class RefreshToken extends HttpServlet{
             out.print("retry: "+Constant.JWT_REFRESH_INTERVAL+ "\n" );
      		out.print("data: "+refreshToken+"\n\n" );
             out.flush();
-          } catch (Exception e) {
+          } catch (Exception e) { //包含超时，签名错误等异常
         	  logger.error(e);
           }
      }
